@@ -1,10 +1,11 @@
+require("./config/database"); // Initialize DataBase
 const express = require("express");
+const checklistRouter = require("./src/routes/checklist");
 
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("<h1>My to do List</h1>");
-});
+app.use(express.json());
+app.use("/checklists", checklistRouter);
 
 app.listen(3000, () => {
   console.log("Server running on port 3000");
