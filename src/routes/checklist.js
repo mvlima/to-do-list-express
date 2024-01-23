@@ -6,9 +6,19 @@ router.get("/", async (_, res) => {
   try {
     const checklists = await Checklist.find({});
 
-    res.status(200).json(checklists);
+    res.status(200).render("checklists/index", { checklists });
   } catch (error) {
-    res.status(500).json(error.message || error);
+    res.status(500).render("pages/error", { error });
+  }
+});
+
+router.get("/new", async (_, res) => {
+  const checklist = new Checklist();
+
+  try {
+    res.status(200).render("checklists/new", { checklist });
+  } catch (error) {
+    res.status(500).render("pages/error", { error });
   }
 });
 
@@ -18,20 +28,24 @@ router.get("/:id", async ({ params }, res) => {
   try {
     const checklist = await Checklist.findById(id);
 
-    res.status(200).json(checklist);
+    res.status(200).render("checklists/show", { checklist });
   } catch (error) {
-    res.status(422).json(error.message || error);
+    res.status(422).render("pages/error", { error });
   }
 });
 
 router.post("/", async (req, res) => {
-  try {
-    const { name } = req.body;
-    const checklist = await Checklist.create({ name });
+  const { name } = req.body.checklist;
+  const checklist = new Checklist({ name });
 
-    res.status(200).json(checklist);
+  try {
+    await checklist.save();
+
+    res.redirect("/checklists");
   } catch (error) {
-    res.status(422).json(error.message || error);
+    res.status(422).render("checklists/new", {
+      checklists: { ...checklist, error },
+    });
   }
 });
 
