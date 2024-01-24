@@ -49,20 +49,33 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", async ({ body, params }, res) => {
-  const { name } = body;
+router.get("/:id/edit", async ({ params }, res) => {
   const { id } = params;
 
   try {
-    const checklist = await Checklist.findByIdAndUpdate(
-      id,
-      { name },
-      { new: true }
-    );
+    const checklist = await Checklist.findById(id);
 
-    res.status(200).json(checklist);
+    res.status(200).render("checklists/edit", { checklist });
   } catch (error) {
-    res.status(422).json(error.message || error);
+    res.status(500).render("pages/error", { error });
+  }
+});
+
+router.put("/:id", async ({ body, params }, res) => {
+  const { name } = body.checklist;
+  const { id } = params;
+
+  const checklist = await Checklist.findById(id);
+
+  try {
+    checklist.name = name;
+    await checklist.save();
+
+    res.redirect("/checklists");
+  } catch (error) {
+    res
+      .status(422)
+      .render("checklists/edit", { checklist: { ...checklist, error } });
   }
 });
 
