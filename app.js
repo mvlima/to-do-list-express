@@ -11,7 +11,7 @@ const app = express();
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride("_method"));
+app.use(methodOverride("_method", { methods: ["GET", "POST"] }));
 
 app.use(express.static(path.join(__dirname, "public")));
 

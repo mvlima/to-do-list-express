@@ -83,11 +83,11 @@ router.delete("/:id", async ({ params }, res) => {
   const { id } = params;
 
   try {
-    const checklist = await Checklist.findByIdAndRemove(id);
+    await Checklist.findByIdAndDelete(id);
 
-    res.status(200).json(checklist);
+    res.redirect("/checklists");
   } catch (error) {
-    res.status(422).json(error.message || error);
+    res.status(500).render("pages/error", { error });
   }
 });
 
