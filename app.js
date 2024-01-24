@@ -4,6 +4,7 @@ const express = require("express");
 const methodOverride = require("method-override");
 
 const rootRouter = require("./src/routes/index");
+const taskRouter = require("./src/routes/task");
 const checklistRouter = require("./src/routes/checklist");
 
 const app = express();
@@ -20,6 +21,7 @@ app.set("view engine", "ejs");
 
 app.use("/", rootRouter);
 app.use("/checklists", checklistRouter);
+app.use("/checklists", taskRouter.checkListDependent);
 
 app.listen(3000, () => {
   console.log("Server running on port 3000");

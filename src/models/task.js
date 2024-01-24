@@ -10,4 +10,4 @@ const taskSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Task", checkListSchema);
+module.exports = mongoose.model("Task", taskSchema);

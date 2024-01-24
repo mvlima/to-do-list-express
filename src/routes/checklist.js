@@ -26,7 +26,7 @@ router.get("/:id", async ({ params }, res) => {
   const { id } = params;
 
   try {
-    const checklist = await Checklist.findById(id);
+    const checklist = await Checklist.findById(id).populate("tasks");
 
     res.status(200).render("checklists/show", { checklist });
   } catch (error) {
