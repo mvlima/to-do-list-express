@@ -22,6 +22,7 @@ app.set("view engine", "ejs");
 app.use("/", rootRouter);
 app.use("/checklists", checklistRouter);
 app.use("/checklists", taskRouter.checkListDependent);
+app.use("/tasks", taskRouter.simple);
 
 app.listen(3000, () => {
   console.log("Server running on port 3000");
